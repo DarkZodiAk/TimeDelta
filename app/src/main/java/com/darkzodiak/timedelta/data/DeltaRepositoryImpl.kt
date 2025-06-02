@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.map
 class DeltaRepositoryImpl(
     private val alarmEventDao: AlarmEventDao,
     private val appEventDao: AppEventDao,
-    private val pendingAlarmDao: PendingAlarmDao
+    private val pendingAlarmDao: PendingAlarmDao,
+    private val alarmScheduler: AlarmScheduler
 ): DeltaRepository {
 
     override fun getAllPendingAlarms(): Flow<List<PendingAlarm>> {
@@ -21,17 +22,17 @@ class DeltaRepositoryImpl(
     }
 
     override suspend fun addAlarm(alarm: PendingAlarm) {
-        TODO("Needs to have AlarmScheduler")
+        alarmScheduler.schedule(alarm)
         pendingAlarmDao.addAlarm(alarm)
     }
 
     override suspend fun deleteAlarm(alarm: PendingAlarm) {
-        TODO("Needs to have AlarmScheduler")
+        alarmScheduler.cancel(alarm)
         pendingAlarmDao.deleteAlarm(alarm)
     }
 
     override suspend fun deleteAllPendingAlarms() {
-        TODO("Needs to have AlarmScheduler")
+        alarmScheduler.cancelAll()
         pendingAlarmDao.clearAllAlarms()
     }
 

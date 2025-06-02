@@ -9,7 +9,6 @@ lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
 composeBom = "2025.05.01"
 roomKtx = "2.7.1"
-scout = "0.9.3"
 workVersion = "2.10.1"
 
 [libraries]
@@ -23,8 +22,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
-
-scout-core = { module = "com.yandex.scout:scout-core", version.ref = "scout" }
 
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "workVersion" }
 

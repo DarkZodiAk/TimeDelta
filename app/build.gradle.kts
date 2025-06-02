@@ -55,9 +55,6 @@ dependencies {
     implementation(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    // Scout DI
-    implementation(libs.scout.core)
-
     // WorkManager
     implementation(libs.work.runtime)
 
