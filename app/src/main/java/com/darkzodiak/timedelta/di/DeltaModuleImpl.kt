@@ -2,9 +2,11 @@ package com.darkzodiak.timedelta.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.darkzodiak.timedelta.data.AlarmScheduler
 import com.darkzodiak.timedelta.data.DeltaRepositoryImpl
 import com.darkzodiak.timedelta.data.local.DeltaDatabase
+import com.darkzodiak.timedelta.data.worker.DelayedAlarmRunner
 
 class DeltaModuleImpl(
     private val context: Context
@@ -30,7 +32,7 @@ class DeltaModuleImpl(
     }
 
     override val alarmScheduler by lazy {
-        AlarmScheduler(context, alarmEventDao, pendingAlarmDao)
+        AlarmScheduler(context, alarmEventDao, pendingAlarmDao, delayedAlarmRunner)
     }
 
     override val deltaRepository by lazy {
@@ -40,5 +42,13 @@ class DeltaModuleImpl(
             pendingAlarmDao,
             alarmScheduler
         )
+    }
+
+    override val workManager by lazy {
+        WorkManager.getInstance(context)
+    }
+
+    override val delayedAlarmRunner by lazy {
+        DelayedAlarmRunner(workManager)
     }
 }

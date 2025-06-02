@@ -1,4 +1,4 @@
-package com.darkzodiak.timedelta.data
+package com.darkzodiak.timedelta.data.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context

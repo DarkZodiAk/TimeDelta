@@ -11,6 +11,8 @@ import androidx.core.content.getSystemService
 import com.darkzodiak.timedelta.data.local.dao.AlarmEventDao
 import com.darkzodiak.timedelta.data.local.dao.PendingAlarmDao
 import com.darkzodiak.timedelta.data.local.entity.PendingAlarm
+import com.darkzodiak.timedelta.data.receivers.AlarmReceiver
+import com.darkzodiak.timedelta.data.worker.DelayedAlarmRunner
 import com.darkzodiak.timedelta.domain.AlarmType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +22,8 @@ import kotlinx.coroutines.launch
 class AlarmScheduler(
     private val context: Context,
     private val alarmEventDao: AlarmEventDao,
-    private val pendingAlarmDao: PendingAlarmDao
+    private val pendingAlarmDao: PendingAlarmDao,
+    private val delayedAlarmRunner: DelayedAlarmRunner
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
     private val handler = Handler(Looper.getMainLooper())
@@ -45,7 +48,9 @@ class AlarmScheduler(
             AlarmType.EXACT_WHILE_IDLE -> {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarm.scheduled, intent)
             }
-            AlarmType.SCHEDULED_WORK -> TODO()
+            AlarmType.SCHEDULED_WORK -> {
+                delayedAlarmRunner.schedule(alarm)
+            }
             AlarmType.HANDLER_TASK -> {
                 handler.postDelayed(
                     { intent.send() },
@@ -57,7 +62,7 @@ class AlarmScheduler(
 
     fun cancel(alarm: PendingAlarm) {
         when(alarm.type) {
-            AlarmType.SCHEDULED_WORK -> TODO()
+            AlarmType.SCHEDULED_WORK -> delayedAlarmRunner.cancel(alarm)
             AlarmType.HANDLER_TASK -> TODO()
             else -> alarmManager.cancel(getIntentForAlarm(alarm))
         }

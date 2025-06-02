@@ -22,18 +22,18 @@ class DeltaRepositoryImpl(
     }
 
     override suspend fun addAlarm(alarm: PendingAlarm) {
-        alarmScheduler.schedule(alarm)
-        pendingAlarmDao.addAlarm(alarm)
+        val id = pendingAlarmDao.addAlarm(alarm)
+        alarmScheduler.schedule(alarm.copy(id = id))
     }
 
     override suspend fun deleteAlarm(alarm: PendingAlarm) {
-        alarmScheduler.cancel(alarm)
         pendingAlarmDao.deleteAlarm(alarm)
+        alarmScheduler.cancel(alarm)
     }
 
     override suspend fun deleteAllPendingAlarms() {
-        alarmScheduler.cancelAll()
         pendingAlarmDao.clearAllAlarms()
+        alarmScheduler.cancelAll()
     }
 
     override fun getAllEvents(): Flow<List<Event>> {

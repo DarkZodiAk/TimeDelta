@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PendingAlarmDao {
     @Insert
-    suspend fun addAlarm(alarm: PendingAlarm)
+    suspend fun addAlarm(alarm: PendingAlarm): Long
 
     @Delete
     suspend fun deleteAlarm(alarm: PendingAlarm)
@@ -23,4 +23,7 @@ interface PendingAlarmDao {
 
     @Query("SELECT * FROM pendingalarm WHERE id=:id")
     suspend fun getAlarmById(id: Long): PendingAlarm?
+
+    @Query("DELETE FROM pendingalarm WHERE id=:id")
+    suspend fun deleteAlarmById(id: Long)
 }
