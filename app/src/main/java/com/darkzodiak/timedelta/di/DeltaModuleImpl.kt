@@ -32,7 +32,7 @@ class DeltaModuleImpl(
     }
 
     override val alarmScheduler by lazy {
-        AlarmScheduler(context, alarmEventDao, pendingAlarmDao, delayedAlarmRunner)
+        AlarmScheduler(context, pendingAlarmDao, delayedAlarmRunner)
     }
 
     override val deltaRepository by lazy {

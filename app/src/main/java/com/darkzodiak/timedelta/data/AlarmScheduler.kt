@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.getSystemService
-import com.darkzodiak.timedelta.data.local.dao.AlarmEventDao
 import com.darkzodiak.timedelta.data.local.dao.PendingAlarmDao
 import com.darkzodiak.timedelta.data.local.entity.PendingAlarm
 import com.darkzodiak.timedelta.data.receivers.AlarmReceiver
@@ -21,7 +20,6 @@ import kotlinx.coroutines.launch
 
 class AlarmScheduler(
     private val context: Context,
-    private val alarmEventDao: AlarmEventDao,
     private val pendingAlarmDao: PendingAlarmDao,
     private val delayedAlarmRunner: DelayedAlarmRunner
 ) {
@@ -63,7 +61,7 @@ class AlarmScheduler(
     fun cancel(alarm: PendingAlarm) {
         when(alarm.type) {
             AlarmType.SCHEDULED_WORK -> delayedAlarmRunner.cancel(alarm)
-            AlarmType.HANDLER_TASK -> TODO()
+            AlarmType.HANDLER_TASK -> Unit
             else -> alarmManager.cancel(getIntentForAlarm(alarm))
         }
     }
