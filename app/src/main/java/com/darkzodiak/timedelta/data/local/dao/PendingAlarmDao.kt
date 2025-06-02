@@ -20,4 +20,7 @@ interface PendingAlarmDao {
 
     @Query("SELECT * FROM pendingalarm")
     fun getAllAlarms(): Flow<List<PendingAlarm>>
+
+    @Query("SELECT * FROM pendingalarm WHERE id=:id")
+    suspend fun getAlarmById(id: Long): PendingAlarm?
 }
