@@ -12,3 +12,5 @@ data class AlarmEventEntity(
     val scheduled: Long,
     val firedAt: Long
 )
+
+// TODO(Does it need something like "outdated, wasn't fired"?)

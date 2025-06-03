@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".TimeDeltaApp"
@@ -28,6 +29,12 @@
         </activity>
 
         <receiver android:name=".data.receivers.AlarmReceiver"/>
+        <receiver android:name=".data.receivers.BootCompletedReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
 
         <provider
             android:name="androidx.startup.InitializationProvider"
