@@ -1,15 +1,15 @@
 package com.darkzodiak.timedelta.data.local
 
-import androidx.room.TypeConverters
+import androidx.room.TypeConverter
 import com.darkzodiak.timedelta.domain.AlarmType
 
 class Converters {
-    @TypeConverters
+    @TypeConverter
     fun toAlarmType(value: String): AlarmType {
         return AlarmType.valueOf(value)
     }
 
-    @TypeConverters
+    @TypeConverter
     fun fromAlarmType(value: AlarmType): String {
         return value.name
     }
