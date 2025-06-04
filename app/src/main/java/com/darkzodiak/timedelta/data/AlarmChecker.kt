@@ -40,7 +40,7 @@ class AlarmChecker(
             return
         }
         alarmEventDao.addAlarm(
-            AlarmEventEntity(null, alarm.type, alarm.scheduled, time)
+            AlarmEventEntity(null, alarm.type, alarm.scheduled, time, time - alarm.scheduled)
         )
         withContext(NonCancellable) {
             pendingAlarmDao.deleteAlarm(alarm)

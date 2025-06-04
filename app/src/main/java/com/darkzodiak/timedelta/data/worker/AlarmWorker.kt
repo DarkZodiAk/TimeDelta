@@ -25,7 +25,7 @@ class AlarmWorker(
         val alarm = pendingAlarmDao.getAlarmById(id) ?: return Result.success()
 
         alarmEventDao.addAlarm(
-            AlarmEventEntity(null, AlarmType.SCHEDULED_WORK, alarm.scheduled, firedAt)
+            AlarmEventEntity(null, AlarmType.SCHEDULED_WORK, alarm.scheduled, firedAt, firedAt - alarm.scheduled)
         )
         withContext(NonCancellable) {
             pendingAlarmDao.deleteAlarm(alarm)

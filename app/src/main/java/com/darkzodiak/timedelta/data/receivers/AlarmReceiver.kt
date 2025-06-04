@@ -28,7 +28,7 @@ class AlarmReceiver: BroadcastReceiver() {
         scope.launch {
             val alarm = pendingAlarmDao.getAlarmById(id) ?: return@launch
             alarmEventDao.addAlarm(
-                AlarmEventEntity(null, alarm.type, alarm.scheduled, firedAt)
+                AlarmEventEntity(null, alarm.type, alarm.scheduled, firedAt, firedAt - alarm.scheduled)
             )
             withContext(NonCancellable) {
                 pendingAlarmDao.deleteAlarm(alarm)

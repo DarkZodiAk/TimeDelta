@@ -14,7 +14,7 @@ class TimeDeltaApp: Application(), Configuration.Provider {
         lateinit var appModule: DeltaModule
     }
 
-    override val workManagerConfiguration: Configuration = run {
+    override val workManagerConfiguration: Configuration by lazy {
         val deltaWorkerFactory = DelegatingWorkerFactory()
 
         deltaWorkerFactory.addFactory(DeltaWorkerFactory(appModule))
@@ -29,4 +29,6 @@ class TimeDeltaApp: Application(), Configuration.Provider {
         appModule = DeltaModuleImpl(applicationContext)
         if(firstLaunchAfterReboot()) appModule.alarmChecker.check()
     }
+
+
 }
