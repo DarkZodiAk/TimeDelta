@@ -99,6 +99,7 @@ fun SetAlarmScreen(
         }
 
         // TODO(Probably will crash with null date)
+        // TODO(What about adding alarm with earlier date than now?)
         Button(onClick = { onAction(SetAlarmAction.AddAlarm) }) {
             Text("Add alarm")
         }

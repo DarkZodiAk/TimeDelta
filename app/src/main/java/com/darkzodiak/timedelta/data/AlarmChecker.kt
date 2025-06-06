@@ -15,6 +15,8 @@ import kotlinx.coroutines.withContext
 // Checks if alarms are outdated (called only first time after reboot)
 // If yes, move them to alarm events with current time
 // If no, reschedule them (WorkManager reschedules itself)
+// TODO(Rename to AlarmRescheduler, separate functions for alarm manager and handler)
+// TODO(Does WorkManager reschedule itself after force-stop?)
 class AlarmChecker(
     private val pendingAlarmDao: PendingAlarmDao,
     private val alarmEventDao: AlarmEventDao,

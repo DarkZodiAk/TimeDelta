@@ -3,7 +3,6 @@ package com.darkzodiak.timedelta
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.DelegatingWorkerFactory
-import com.darkzodiak.timedelta.data.firstLaunchAfterReboot
 import com.darkzodiak.timedelta.data.worker.DeltaWorkerFactory
 import com.darkzodiak.timedelta.di.DeltaModule
 import com.darkzodiak.timedelta.di.DeltaModuleImpl
@@ -27,8 +26,8 @@ class TimeDeltaApp: Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         appModule = DeltaModuleImpl(applicationContext)
-        if(firstLaunchAfterReboot()) appModule.alarmChecker.check()
+        if(appModule.firstLaunchPostBootDetector.isFirstLaunch()) {
+            appModule.alarmChecker.check()
+        }
     }
-
-
 }
