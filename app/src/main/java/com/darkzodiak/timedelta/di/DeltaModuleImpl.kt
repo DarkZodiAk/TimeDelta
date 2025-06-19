@@ -6,7 +6,8 @@ import androidx.work.WorkManager
 import com.darkzodiak.timedelta.data.AlarmChecker
 import com.darkzodiak.timedelta.data.AlarmScheduler
 import com.darkzodiak.timedelta.data.DeltaRepositoryImpl
-import com.darkzodiak.timedelta.data.boot.TimedPostBootDetector
+import com.darkzodiak.timedelta.data.detectors.FirstLaunchPostBootDetector
+import com.darkzodiak.timedelta.data.detectors.ForceStopDetector
 import com.darkzodiak.timedelta.data.local.DeltaDatabase
 import com.darkzodiak.timedelta.data.worker.DelayedAlarmRunner
 
@@ -59,6 +60,10 @@ class DeltaModuleImpl(
     }
 
     override val firstLaunchPostBootDetector by lazy {
-        TimedPostBootDetector(context)
+        FirstLaunchPostBootDetector(context)
+    }
+
+    override val forceStopDetector by lazy {
+        ForceStopDetector(context)
     }
 }

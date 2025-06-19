@@ -1,16 +1,14 @@
-package com.darkzodiak.timedelta.data.boot
+package com.darkzodiak.timedelta.data.detectors
 
 import android.content.Context
 import android.os.SystemClock
 import androidx.core.content.edit
 import kotlin.math.abs
 
-class TimedPostBootDetector(
-    context: Context
-): FirstLaunchPostBootDetector {
+class FirstLaunchPostBootDetector(context: Context) {
     private val pref = context.getSharedPreferences("BOOT", Context.MODE_PRIVATE)
 
-    override fun isFirstLaunch(): Boolean {
+    fun isFirstLaunch(): Boolean {
         val bootTime = System.currentTimeMillis() - SystemClock.elapsedRealtime()
         val storedBootTime = pref.getLong(BOOT_TIME, -1L)
         if(storedBootTime == -1L) {

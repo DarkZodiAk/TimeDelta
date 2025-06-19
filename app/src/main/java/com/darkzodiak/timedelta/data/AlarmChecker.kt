@@ -14,9 +14,7 @@ import kotlinx.coroutines.withContext
 
 // Checks if alarms are outdated (called only first time after reboot)
 // If yes, move them to alarm events with current time
-// If no, reschedule them (WorkManager reschedules itself)
-// TODO(Rename to AlarmRescheduler, separate functions for alarm manager and handler)
-// TODO(Does WorkManager reschedule itself after force-stop?)
+// If no, reschedule them (WorkManager reschedules itself, so don't touch it)
 class AlarmChecker(
     private val pendingAlarmDao: PendingAlarmDao,
     private val alarmEventDao: AlarmEventDao,
@@ -24,28 +22,35 @@ class AlarmChecker(
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    fun check() {
+    fun check(skipSystemAlarms: Boolean = false) {
         val time = System.currentTimeMillis()
         scope.launch {
             val alarms = pendingAlarmDao.getAllAlarms().first()
-            alarms.forEach {
-                rescheduleOrInvalidate(it, time)
-            }
+            alarms
+                .filter { it.type != AlarmType.SCHEDULED_WORK }
+                .filter { !isExpired(it, time) }
+                .filterNot { skipSystemAlarms && it.isSystemAlarm }
+                .forEach {
+                    reschedule(it)
+                }
         }
     }
 
+    // If alarm is expired, returns true and sets an event. Else returns false
+    private suspend fun isExpired(alarm: PendingAlarm, time: Long): Boolean {
+        if(alarm.scheduled > time) return false
 
-    private suspend fun rescheduleOrInvalidate(alarm: PendingAlarm, time: Long) {
-        if(alarm.type == AlarmType.SCHEDULED_WORK) return
-        if(alarm.scheduled > time) {
-            alarmScheduler.schedule(alarm)
-            return
-        }
         alarmEventDao.addAlarm(
             AlarmEventEntity(null, alarm.type, alarm.scheduled, time, time - alarm.scheduled)
         )
         withContext(NonCancellable) {
             pendingAlarmDao.deleteAlarm(alarm)
         }
+
+        return true
+    }
+
+    private fun reschedule(alarm: PendingAlarm) {
+        alarmScheduler.schedule(alarm)
     }
 }

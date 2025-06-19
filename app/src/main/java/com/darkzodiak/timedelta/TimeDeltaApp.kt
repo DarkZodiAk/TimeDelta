@@ -26,8 +26,10 @@ class TimeDeltaApp: Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         appModule = DeltaModuleImpl(applicationContext)
-        if(appModule.firstLaunchPostBootDetector.isFirstLaunch()) {
-            appModule.alarmChecker.check()
-        }
+
+        val rescheduleSystemAlarms = appModule.firstLaunchPostBootDetector.isFirstLaunch() ||
+                appModule.forceStopDetector.wasForceStopped()
+
+        appModule.alarmChecker.check(skipSystemAlarms = !rescheduleSystemAlarms)
     }
 }
