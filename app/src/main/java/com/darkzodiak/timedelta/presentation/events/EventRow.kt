@@ -1,4 +1,4 @@
-package com.darkzodiak.timedelta.presentation.events.components
+package com.darkzodiak.timedelta.presentation.events
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,14 +29,12 @@ fun EventRow(
             .padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             if(event is Event.AlarmEvent) {
                 Text("Alarm: ${event.type}")
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Scheduled: ${event.scheduled.formatTimestamp()}")
-                    Text("Fired at: ${event.firedAt.formatTimestamp()}")
-                }
+                Text("Scheduled: ${event.scheduled.formatTimestamp()}")
+                Text("Fired at:      ${event.firedAt.formatTimestamp()}")
                 Text("Difference: ${event.difference.formatTimeNonZoned()}")
             } else if(event is Event.AppEvent) {
                 Text("App event: ${event.message}")
