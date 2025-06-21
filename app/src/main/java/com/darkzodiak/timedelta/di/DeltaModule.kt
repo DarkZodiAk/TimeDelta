@@ -3,6 +3,7 @@ package com.darkzodiak.timedelta.di
 import androidx.work.WorkManager
 import com.darkzodiak.timedelta.data.AlarmChecker
 import com.darkzodiak.timedelta.data.AlarmScheduler
+import com.darkzodiak.timedelta.data.AppEventLogger
 import com.darkzodiak.timedelta.data.detectors.FirstLaunchPostBootDetector
 import com.darkzodiak.timedelta.data.detectors.ForceStopDetector
 import com.darkzodiak.timedelta.data.local.DeltaDatabase
@@ -24,4 +25,5 @@ interface DeltaModule {
     val delayedAlarmRunner: DelayedAlarmRunner
     val firstLaunchPostBootDetector: FirstLaunchPostBootDetector
     val forceStopDetector: ForceStopDetector
+    val appEventLogger: AppEventLogger
 }

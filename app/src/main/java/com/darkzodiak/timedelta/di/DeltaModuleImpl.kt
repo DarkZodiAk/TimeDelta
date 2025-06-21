@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.work.WorkManager
 import com.darkzodiak.timedelta.data.AlarmChecker
 import com.darkzodiak.timedelta.data.AlarmScheduler
+import com.darkzodiak.timedelta.data.AppEventLogger
 import com.darkzodiak.timedelta.data.DeltaRepositoryImpl
 import com.darkzodiak.timedelta.data.detectors.FirstLaunchPostBootDetector
 import com.darkzodiak.timedelta.data.detectors.ForceStopDetector
@@ -65,5 +66,9 @@ class DeltaModuleImpl(
 
     override val forceStopDetector by lazy {
         ForceStopDetector(context)
+    }
+
+    override val appEventLogger by lazy {
+        AppEventLogger(context, appEventDao)
     }
 }
